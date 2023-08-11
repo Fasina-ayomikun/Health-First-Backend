@@ -9,7 +9,10 @@ const createDonation = async (req, res) => {
   try {
     const { charity: charityId } = req.body;
     // Check if charity Exists
-    const isRealCharity = await Charities.findOne({ _id: charityId });
+    const isRealCharity = await Charities.findOne({ _id: charityId }).populate({
+      path: "user",
+      select: "firstName lastName email  createdAt",
+    });
     if (!isRealCharity) {
       throw new BadRequestError("This charity does not exist");
     }
@@ -19,13 +22,9 @@ const createDonation = async (req, res) => {
       charity: charityId,
       user: req.user.userId,
     });
-    console.log(userCharity);
     if (userCharity.length < 1) {
-      console.log("nahh");
-
       listOfDonors.push(isRealCharity);
       await Charities.updateOne({ _id: charityId }, { listOfDonors });
-      console.log(listOfDonors);
     }
     const newDonation = await Donation.create(req.body);
     res.status(201).json({
@@ -37,6 +36,23 @@ const createDonation = async (req, res) => {
     checkError(res, error);
   }
 };
+const getUserDonations = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const sort = { createdAt: -1 };
+    const donations = await Donation.find({ user: id }).sort(sort).populate({
+      path: "charity",
+      select: "title description amountNeeded amountDonated",
+    });
+    res
+      .status(200)
+      .json({ success: true, donations, length: donations.length });
+  } catch (error) {
+    checkError(res, error);
+  }
+};
 module.exports = {
   createDonation,
+  getUserDonations,
 };

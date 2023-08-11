@@ -23,7 +23,7 @@ const getUserCharities = async (req, res) => {
   try {
     const { userId } = req.params;
     const sort = { createdAt: -1 };
-    const charities = await charity.find({ user: userId }).sort(sort);
+    const charities = await Charity.find({ user: userId }).sort(sort);
     res
       .status(200)
       .json({ success: true, charities, length: charities.length });
@@ -86,7 +86,10 @@ const deleteCharity = async (req, res) => {
 const singleCharity = async (req, res) => {
   try {
     const { id: charityId } = req.params;
-    const charity = await Charities.findById({ _id: charityId });
+    const charity = await Charities.findById({ _id: charityId }).populate({
+      path: "user",
+      select: "firstName lastName email  createdAt",
+    });
     console.log(charity);
 
     if (!charity) {
