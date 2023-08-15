@@ -17,8 +17,9 @@ const CharitiesSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide an image for your Charities"],
     },
-    video: {
+    medicalReport: {
       type: String,
+      required: [true, "Please provide an image of your medical report"],
     },
     amountNeeded: {
       type: Number,
