@@ -57,10 +57,16 @@ const getCharityDonations = async (req, res) => {
     const { charityId: id } = req.params;
     console.log(id);
     const sort = { createdAt: -1 };
-    const donations = await Donation.find({ charity: id }).sort(sort).populate({
-      path: "user",
-      select: "email firstName lastName",
-    });
+    const donations = await Donation.find({ charity: id })
+      .sort(sort)
+      .populate({
+        path: "user",
+        select: "email firstName lastName",
+      })
+      .populate({
+        path: "charity",
+        select: "title description amountNeeded amountDonated",
+      });
     res
       .status(200)
       .json({ success: true, donations, length: donations.length });
