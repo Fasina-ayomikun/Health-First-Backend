@@ -52,7 +52,24 @@ const getUserDonations = async (req, res) => {
     checkError(res, error);
   }
 };
+const getCharityDonations = async (req, res) => {
+  try {
+    const { charityId: id } = req.params;
+    console.log(id);
+    const sort = { createdAt: -1 };
+    const donations = await Donation.find({ charity: id }).sort(sort).populate({
+      path: "user",
+      select: "email firstName lastName",
+    });
+    res
+      .status(200)
+      .json({ success: true, donations, length: donations.length });
+  } catch (error) {
+    checkError(res, error);
+  }
+};
 module.exports = {
   createDonation,
   getUserDonations,
+  getCharityDonations,
 };
