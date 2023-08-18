@@ -10,7 +10,7 @@ const getAllCharities = async (req, res) => {
   try {
     // Sort the charities with createdAt
     const sort = { createdAt: -1 };
-    const charities = await charity.find().sort(sort).populate({
+    const charities = await Charities.find().sort(sort).populate({
       path: "user",
       select: "firstName lastName email  createdAt",
     });
@@ -23,7 +23,7 @@ const getUserCharities = async (req, res) => {
   try {
     const { userId } = req.params;
     const sort = { createdAt: -1 };
-    const charities = await Charity.find({ user: userId }).sort(sort);
+    const charities = await Charities.find({ user: userId }).sort(sort);
     res
       .status(200)
       .json({ success: true, charities, length: charities.length });
