@@ -10,7 +10,7 @@ const addCookies = ({ res, user }) => {
     secure: true,
     expires: new Date(Date.now() + maxAge),
     signed: true,
-    // sameSite: "None",
+    sameSite: "None",
   });
 };
 module.exports = {
