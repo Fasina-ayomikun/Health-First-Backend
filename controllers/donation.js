@@ -60,12 +60,12 @@ const getCharityDonations = async (req, res) => {
     const donations = await Donation.find({ charity: id })
       .sort(sort)
       .populate({
-        path: "user",
-        select: "email firstName lastName",
-      })
-      .populate({
         path: "charity",
         select: "title description amountNeeded amountDonated",
+      })
+      .populate({
+        path: "user",
+        select: "email firstName lastName",
       });
     res
       .status(200)

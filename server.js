@@ -50,6 +50,7 @@ app.use("/users", require("./routes/user"));
 app.use("/charities", require("./routes/charities"));
 app.use("/files", require("./routes/files"));
 app.use("/donations", require("./routes/donation"));
+app.use("/paystack", require("./routes/paystack"));
 // MiddleWare
 app.use(NotFoundMiddleWare);
 mongoose.set("strictQuery", false);
